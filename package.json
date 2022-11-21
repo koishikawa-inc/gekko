@@ -3,18 +3,29 @@
   "description": "smoothscroll library",
   "keywords": [
     "smooth",
-    "scroll"
+    "scroll",
+    "ヤモリ",
+    "スムーススクロール"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koishikawa-inc/gekko"
+  },
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.1",
   "author": "darowasahito",
   "license": "MIT",
+  "homepage": "https://github.com/koishikawa-inc/gekko#readme",
+  "bugs": {
+    "url": "https://github.com/koishikawa-inc/gekko/issues"
+  },
   "type": "module",
   "files": [
     "dist"
   ],
   "main": "./dist/gekko.min.js",
   "scripts": {
+    "prepublish": "tsc && vite build",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
