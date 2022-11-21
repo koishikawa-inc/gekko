@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gekko Preview</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="header">Header</div>
+    <div id="app">
+      <section id="section-00">
+        <h2>section-00</h2>
+        <a href="#section-01">to section-01</a>
+        <a href="#">action</a>
+        <a href="#section-01">to section-01</a>
+      </section>
+
+      <section id="section-01">
+        <h2>section-01</h2>
+        <a href="#section-02">to section-02</a>
+      </section>
+
+      <section id="section-02">
+        <h2>section-02</h2>
+        <a href="./#section-03">to section-03</a>
+      </section>
+
+      <section id="section-03">
+        <h2>section-03</h2>
+        <a href="#section-04" class="no-scroll">to section-04</a>
+
+        <div class="box"></div>
+      </section>
+
+      <section id="section-04">
+        <h2>section-04</h2>
+        <a href="#section-00">to section-00</a>
+      </section>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
