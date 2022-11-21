@@ -7,7 +7,7 @@ const error = (...args: any) => {
 
 const optionsDefault: Params = {
   speed: 1000,
-  isDuration: false, // true: mili seconds, false: px/sec
+  isDuration: false, // true: ms, false: px/sec
   delay: 0,
   easing: 'outQuad',
   header: 'header',
@@ -49,7 +49,7 @@ class Gekko implements TypeGekko {
     });
   }
 
-  scroll(anchor: string): void {
+  scroll(anchor: string, isSmooth: boolean = true): void {
     const target = document.getElementById(anchor.replace('#', ''));
 
     if (target) {
@@ -75,30 +75,34 @@ class Gekko implements TypeGekko {
       document.dispatchEvent(new CustomEvent('beforeScroll', { detail: { anchor } }));
 
       // ---------- ---------- ----------
-      // スムーススクロール
-      this.isScrolling = true;
-      const duration = this.params.isDuration ? this.params.speed : Math.abs(distance / this.params.speed) * 1000;
-      const timeStart = performance.now();
-      const smoothScroll = (time: number) => {
-        const progress = (time - timeStart) / duration;
-        if (progress < 1 && !this.isStop) {
-          // スムーススクロール　進行
-          window.scrollTo(0, topScroll + distance * ease[this.params.easing](progress));
-          // window.scrollTo(0, topScroll + (position - topScroll) * progress);
-          window.requestAnimationFrame(smoothScroll);
-        } else if (this.isStop) {
-          // スムーススクロール 中断
-          this.isScrolling = false;
-          document.dispatchEvent(new CustomEvent('stopScroll', { detail: { anchor } }));
-        } else {
-          // スムーススクロール 終了
-          window.scrollTo(0, position);
-          this.isScrolling = false;
-          document.dispatchEvent(new CustomEvent('afterScroll', { detail: { anchor } }));
-        }
-      };
-
-      window.requestAnimationFrame(smoothScroll);
+      // スクロール
+      if (isSmooth) {
+        // スムーススクロール
+        this.isScrolling = true;
+        const duration = this.params.isDuration ? this.params.speed : Math.abs(distance / this.params.speed) * 1000;
+        const timeStart = performance.now();
+        const smoothScroll = (time: number) => {
+          const progress = (time - timeStart) / duration;
+          if (progress < 1 && !this.isStop) {
+            // スムーススクロール　進行
+            window.scrollTo(0, topScroll + distance * ease[this.params.easing](progress));
+            // window.scrollTo(0, topScroll + (position - topScroll) * progress);
+            window.requestAnimationFrame(smoothScroll);
+          } else if (this.isStop) {
+            // スムーススクロール 中断
+            this.isScrolling = false;
+            document.dispatchEvent(new CustomEvent('stopScroll', { detail: { anchor } }));
+          } else {
+            // スムーススクロール 終了
+            window.scrollTo(0, position);
+            this.isScrolling = false;
+            document.dispatchEvent(new CustomEvent('afterScroll', { detail: { anchor } }));
+          }
+        };
+        window.requestAnimationFrame(smoothScroll);
+      } else {
+        window.scrollTo(0, position);
+      }
     } else {
       error('id is not found');
     }
@@ -129,7 +133,6 @@ class Gekko implements TypeGekko {
   private onClick(e: MouseEvent): void {
     e.preventDefault();
     e.stopPropagation();
-
     const elm = e.currentTarget as HTMLAnchorElement;
 
     if (!elm) {
@@ -139,9 +142,12 @@ class Gekko implements TypeGekko {
 
     const anchor = `${elm.protocol}//${elm.host}${elm.pathname}` === location.origin + location.pathname ? elm.hash : '';
 
-    if (!elm.classList.contains('no-scroll')) {
+    if (anchor && !elm.classList.contains('no-smoothscroll')) {
       this.scroll(anchor);
+    } else if (anchor && elm.classList.contains('no-smoothscroll')) {
+      this.scroll(anchor, false);
     } else {
+      window.location.href = elm.href;
     }
   }
 

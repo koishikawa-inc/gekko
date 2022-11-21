@@ -9,5 +9,11 @@ export default defineConfig({
       fileName: (format) => (format === 'umd' ? 'gekko.min.js' : `gekko.${format}.js`),
       // formats: ['umd'],
     },
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        nested: resolve(__dirname, 'link.html'),
+      },
+    },
   },
 });
