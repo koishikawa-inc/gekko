@@ -11,4 +11,6 @@ gekko.on('beforeScroll', (anchor) => {
 });
 gekko.on('afterScroll', (anchor) => {
   console.log('afterScroll', anchor);
+document.getElementById('set')?.addEventListener('click', function () {
+  gekko.options({ speed: 500 });
 });

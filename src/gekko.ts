@@ -120,6 +120,13 @@ class Gekko implements TypeGekko {
     document.addEventListener(event, handler as EventListenerOrEventListenerObject);
   }
 
+  options(options: Partial<Params>) {
+    this.params = {
+      ...this.params,
+      ...options,
+    };
+  }
+
   destroy(): void {
     document.querySelectorAll('a').forEach((elm) => {
       elm.removeEventListener('click', this.onClick);
