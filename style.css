@@ -1,9 +1,9 @@
 :root {
   color: rgb(255 255 255 / 87%);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 100%;
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 24px;
+  line-height: 1.5;
 
   background-color: #242424;
 
@@ -23,14 +23,22 @@
 }
 
 a {
-  color: #64acff;
+  display: block;
+  max-width: 20em;
+  margin: 0.5em auto;
+
+  /* background: #64acff; */
+
+  /* color: #64acff; */
   font-weight: 500;
-  font-size: 2em;
-  text-decoration: underline;
+  font-size: 1.5em;
+  text-decoration: none;
+
+  transition: background 0.3s;
 }
 
 a:hover {
-  color: #fff;
+  background-color: #fff !important;
 }
 
 body {
@@ -112,7 +120,9 @@ button:focus-visible {
 }
 
 .index a {
-  color: rgb(135 145 255);
+  color: #000;
+
+  background-color: rgb(135 145 255);
 }
 
 .link {
@@ -124,7 +134,9 @@ button:focus-visible {
 }
 
 .link a {
-  color: rgb(30 30 30);
+  color: rgb(135 145 255);
+
+  background-color: rgb(30 30 30);
 }
 
 section {
@@ -143,11 +155,70 @@ section:nth-child(even) {
   background: rgb(0 0 0 / 10%);
 }
 
-.box {
-  position: absolute;
+label {
+  font-weight: bold;
+  font-size: 0.75em;
+}
 
-  width: 100px;
-  height: 100px;
+input,
+select,
+button {
+  padding: 0.5em;
+
+  font-size: 0.85rem;
+
+  border: 0;
+  border-radius: 0.25em;
+}
+
+input:not([type="checkbox"]),
+select {
+  display: block;
+  width: 100%;
+}
+
+button {
+  width: min(10em, 100%);
+  padding: 0.75em 1em;
+
+  color: #fff;
+  font-weight: bold;
+
+  background: rgb(255 75 100);
+
+  transition: color 0.3s, background 0.3s;
+}
+
+button:hover {
+  color: #000;
 
   background: #fff;
+}
+
+.controle {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+
+  padding: 0.5rem;
+
+  text-align: left;
+
+  background: rgb(0 0 0 / 90%);
+  border-radius: 0.5em;
+}
+
+.controle div {
+  margin: 0.5em 0;
+}
+
+.controle .action {
+  margin-top: 1em;
+
+  text-align: center;
+}
+
+button,
+summary {
+  cursor: pointer;
 }

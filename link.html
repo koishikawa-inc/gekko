@@ -11,28 +11,113 @@
     <div id="app">
       <section id="section-00">
         <h2>section-00</h2>
+        <a href="#section-04">to section-04</a>
+        <a href="./#section-00">to Index.html section-00</a>
         <a href="#section-01">to section-01</a>
       </section>
 
       <section id="section-01">
         <h2>section-01</h2>
+        <a href="#section-00">to section-00</a>
+        <a href="./#section-01">to Index.html section-01</a>
         <a href="#section-02">to section-02</a>
       </section>
 
       <section id="section-02">
         <h2>section-02</h2>
-        <a href="./#section-03">to Index.html section-03</a>
+        <a href="#section-01">to section-01</a>
+        <a href="./#section-02">to Index.html section-02</a>
+        <a href="#section-03">to section-03</a>
       </section>
 
       <section id="section-03">
         <h2>section-03</h2>
+        <a href="#section-02" class="no-smoothscroll">to section-02 .no-smoothscroll</a>
+        <a href="./#section-02">to Index.html section-02</a>
         <a href="#section-04" class="no-smoothscroll">to section-04 .no-smoothscroll</a>
       </section>
 
       <section id="section-04">
         <h2>section-04</h2>
-        <a href="./link.html#section-00">to Link.html #section-00</a>
+        <a href="#section-03">to #section-03</a>
+        <a href="./#section-04">to Index.html section-04</a>
+        <a href="#section-00">to #section-00</a>
       </section>
+    </div>
+    <div class="controle">
+      <details>
+        <summary>オプション</summary>
+        <form action="" id="options">
+          <div>
+            <label>
+              speed
+              <input type="number" name="speed" value="1000" min="0" />
+            </label>
+          </div>
+          <div>
+            <label>
+              isDuration
+              <input type="hidden" name="isDuration" value="off" />
+              <input type="checkbox" name="isDuration" checked /> speedをdurationとして扱う
+            </label>
+          </div>
+          <div>
+            <label>
+              delay
+              <input type="number" name="delay" value="0" min="0" />
+            </label>
+          </div>
+          <div>
+            <label>
+              easing
+              <select name="easing" name="easing" value="outQuad">
+                <option value="inQuad">inQuad</option>
+                <option value="outQuad">outQuad</option>
+                <option value="inOutQuad">inOutQuad</option>
+                <option value="inCubic">inCubic</option>
+                <option value="outCubic">outCubic</option>
+                <option value="inOutCubic">inOutCubic</option>
+                <option value="inQuart">inQuart</option>
+                <option value="outQuart">outQuart</option>
+                <option value="inOutQuart">inOutQuart</option>
+                <option value="inQuint">inQuint</option>
+                <option value="outQuint">outQuint</option>
+                <option value="inOutQuint">inOutQuint</option>
+                <option value="inSine">inSine</option>
+                <option value="outSine">outSine</option>
+                <option value="inOutSine">inOutSine</option>
+                <option value="inExpo">inExpo</option>
+                <option value="outExpo">outExpo</option>
+                <option value="inOutExpo">inOutExpo</option>
+                <option value="inCirc">inCirc</option>
+                <option value="outCirc">outCirc</option>
+                <option value="inOutCirc">inOutCirc</option>
+                <option value="inElastic">inElastic</option>
+                <option value="outElastic">outElastic</option>
+                <option value="inOutElastic">inOutElastic</option>
+                <option value="inBack">inBack</option>
+                <option value="outBack">outBack</option>
+                <option value="inOutBack">inOutBack</option>
+                <option value="inBounce">inBounce</option>
+                <option value="outBounce">outBounce</option>
+                <option value="inOutBounce">inOutBounce</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <label>
+              header
+              <input type="text" name="header" value="header" />
+            </label>
+          </div>
+          <div>
+            <label> offset <input type="number" name="offset" value="0" /> </label>
+          </div>
+          <div class="action">
+            <button type="submit">update</button>
+          </div>
+        </form>
+      </details>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
