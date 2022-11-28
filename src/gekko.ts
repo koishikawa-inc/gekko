@@ -7,7 +7,7 @@ const error = (...args: any) => {
 
 const optionsDefault: Params = {
   speed: 1000,
-  isDuration: false, // true: ms, false: px/sec
+  isSpeedAsDuration: false,
   delay: 0,
   easing: 'outQuad',
   header: 'header',
@@ -79,7 +79,7 @@ class Gekko implements TypeGekko {
       if (isSmooth) {
         // スムーススクロール
         this.isScrolling = true;
-        const duration = this.params.isDuration ? this.params.speed : Math.abs(distance / this.params.speed) * 1000;
+        const duration = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(distance / this.params.speed) * 1000;
         const timeStart = performance.now();
         const smoothScroll = (time: number) => {
           const progress = (time - timeStart) / duration;
@@ -149,9 +149,9 @@ class Gekko implements TypeGekko {
 
     const anchor = `${elm.protocol}//${elm.host}${elm.pathname}` === location.origin + location.pathname ? elm.hash : '';
 
-    if (anchor && !elm.classList.contains('no-smoothscroll')) {
+    if (anchor && elm.dataset.gekko !== 'no-smooth') {
       this.scroll(anchor);
-    } else if (anchor && elm.classList.contains('no-smoothscroll')) {
+    } else if (anchor && elm.dataset.gekko === 'no-smooth') {
       this.scroll(anchor, false);
     } else {
       window.location.href = elm.href;

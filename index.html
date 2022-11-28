@@ -32,9 +32,9 @@
 
       <section id="section-03">
         <h2>section-03</h2>
-        <a href="#section-02" class="no-smoothscroll">to section-02 .no-smoothscroll</a>
+        <a href="#section-02" data-gekko="no-smooth">to section-02 .no-smoothscroll</a>
         <a href="link.html#section-02">to Link.html section-02</a>
-        <a href="#section-04" class="no-smoothscroll">to section-04 .no-smoothscroll</a>
+        <a href="#section-04" data-gekko="no-smooth">to section-04 .no-smoothscroll</a>
       </section>
 
       <section id="section-04">
@@ -56,9 +56,9 @@
           </div>
           <div>
             <label>
-              isDuration
-              <input type="hidden" name="isDuration" value="off" />
-              <input type="checkbox" name="isDuration" checked /> speedをdurationとして扱う
+              isSpeedAsDuration
+              <input type="hidden" name="isSpeedAsDuration" value="off" />
+              <input type="checkbox" name="isSpeedAsDuration" checked /> speedをdurationとして扱う
             </label>
           </div>
           <div>
@@ -70,7 +70,7 @@
           <div>
             <label>
               easing
-              <select name="easing" name="easing" value="outQuad">
+              <select name="easing" value="outQuad">
                 <option value="inQuad">inQuad</option>
                 <option value="outQuad">outQuad</option>
                 <option value="inOutQuad">inOutQuad</option>

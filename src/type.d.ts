@@ -5,7 +5,7 @@ export interface TypeGekko {
 
 export type Params = {
   speed: number;
-  isDuration: boolean;
+  isSpeedAsDuration: boolean;
   delay: number;
   header: string;
   offset: number;

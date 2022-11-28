@@ -1,7 +1,11 @@
 import Gekko from './gekko';
 
-const gekko = new Gekko({ speed: 1000, isDuration: true, header: '.header', offset: 0 });
-console.log(gekko);
+const gekko = new Gekko({
+  speed: 1000,
+  isSpeedAsDuration: false,
+  header: '.header',
+  offset: 0,
+});
 
 // gekko.scroll("#section-04");
 // gekko.destroy();
@@ -14,24 +18,18 @@ gekko.on('afterScroll', (anchor) => {
   console.log('afterScroll', anchor);
 });
 
-document.getElementById('set')?.addEventListener('click', function () {
-  gekko.options({ speed: 500 });
-});
-
 document.getElementById('options')?.addEventListener('submit', function (e: SubmitEvent) {
   e.preventDefault();
 
-  const op: { [key: string]: any } = {};
-  const data = new FormData(e.target as HTMLFormElement);
-  data.forEach((value, key) => {
-    if (key === 'isDuration') {
-      op[key] = value === 'on';
+  const newOptions: { [key: string]: any } = {};
+  const formData = new FormData(e.target as HTMLFormElement);
+  formData.forEach((value, key) => {
+    if (key === 'isSpeedAsDuration') {
+      newOptions[key] = value === 'on';
     } else {
-      op[key] = isNaN(Number(value)) ? value : Number(value);
+      newOptions[key] = isNaN(Number(value)) ? value : Number(value);
     }
   });
 
-  console.log(op);
-
-  gekko.options(op);
+  gekko.options(newOptions);
 });

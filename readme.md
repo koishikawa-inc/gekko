@@ -8,8 +8,9 @@ Gekko は フィンランド語でヤモリを意味する言葉です。
 
 - アンカーリンクまでアニメーションでスクロール
 - 外部ページから遷移時にアニメーションでスクロール
+- 位置調整（ヘッダーなど）
 - 絶対パス、相対パスに対応
-- .no-scroll 追加でアニメーション無効
+- data-gekko="no-smooth" 追加でアニメーション無効
 - スクロール開始時に「beforeScroll」イベントを発火
 - スクロール終了時に「afterScroll」イベントを発火
 - スクロール中断時に「stopScroll」イベントを発火
@@ -56,8 +57,8 @@ const gekko = new Gekko();
 
 | プロパティ | 型                                                                                                                                                                                                                                                                                                                                                                                                                      | デフォルト | 説明                                                                                                                            |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| speed      | number                                                                                                                                                                                                                                                                                                                                                                                                                  | 1000       | アニメーションスピード。  isDuration が false のとき、1 秒間に移動するピクセル量。  isDuration が true のとき、アニメーション時間 |
-| isDuration | boolean                                                                                                                                                                                                                                                                                                                                                                                                                 | false      | speed をアニメーション時間(duration)として扱うかどうか                                                                          |
+| speed      | number                                                                                                                                                                                                                                                                                                                                                                                                                  | 1000       | アニメーションスピード。  isSpeedAsDuration が false のとき、1 秒間に移動するピクセル量。  isSpeedAsDuration が true のとき、アニメーション時間 |
+| isSpeedAsDuration | boolean                                                                                                                                                                                                                                                                                                                                                                                                                 | false      | speed をアニメーション時間(duration)として扱うかどうか                                                                          |
 | delay      | number                                                                                                                                                                                                                                                                                                                                                                                                                  | 0          | 遅延 ミリ秒                                                                                                                     |
 | easing     | いずれかの文字列 'inQuad', 'outQuad' , 'inOutQuad' , 'inCubic' , 'outCubic' , 'inOutCubic' , 'inQuart' , 'outQuart' , 'inOutQuart' , 'inQuint' , 'outQuint' , 'inOutQuint' , 'inSine' , 'outSine' , 'inOutSine' , 'inExpo' , 'outExpo' , 'inOutExpo' , 'inCirc' , 'outCirc' , 'inOutCirc' , 'inElastic' , 'outElastic' , 'inOutElastic' , 'inBack' , 'outBack' , 'inOutBack' , 'inBounce' , 'outBounce' , 'inOutBounce' | 'outQuad'  | イージング                                                                                                                      |
 | header     | string                                                                                                                                                                                                                                                                                                                                                                                                                  | 'header'   | ヘッダーのセレクタ。スクロール位置をヘッダーの高さ分ずらす                                                                      |
@@ -95,16 +96,19 @@ gekko.scroll("#anchor");
 // スムーススクロール停止
 gekko.stop();
 
+// オプション更新
+gekko.options( オプション );
+
 // gekko破棄
 gekko.destory();
 ```
 
 ## スムーススクロール無効化
 
-```.no-scroll```がついたアンカーリンクは、スムーススクロールしません。
+```data-gekko="no-smooth"```がついたアンカーリンクは、スムーススクロールしません。
 
 ```html
-<a href="#anchor" class="no-scroll">アンカーリンク</a>
+<a href="#anchor" data-gekko="no-smooth">アンカーリンク</a>
 ```
 
 ## 参考
