@@ -34,6 +34,13 @@ dist/gekko.min.js を良きディレクトリに設置
 
 ```sh
 > yarn install
+```
+
+vite.config.js を編集
+rollupOptionsの部分のコメントアウトを外す。
+（他にいいやり方がないか検討中）
+
+```sh
 > yarn dev
 ```
 

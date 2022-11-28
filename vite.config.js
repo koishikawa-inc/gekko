@@ -7,13 +7,13 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/gekko.ts'),
       name: 'Gekko',
       fileName: (format) => (format === 'umd' ? 'gekko.min.js' : `gekko.${format}.js`),
-      // formats: ['umd'],
     },
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        nested: resolve(__dirname, 'link.html'),
-      },
-    },
+    // MEMO: yarn dev を実行するときにコメントアウトを外す
+    // rollupOptions: {
+    //   input: {
+    //     main: resolve(__dirname, 'index.html'),
+    //     nested: resolve(__dirname, 'link.html'),
+    //   },
+    // },
   },
 });
