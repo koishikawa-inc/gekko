@@ -1,7 +1,7 @@
 var q = Object.defineProperty;
 var y = (t, n, e) => n in t ? q(t, n, { enumerable: !0, configurable: !0, writable: !0, value: e }) : t[n] = e;
 var u = (t, n, e) => (y(t, typeof n != "symbol" ? n + "" : n, e), e);
-const o = Math.pow, l = Math.sqrt, r = Math.sin, g = Math.cos, c = Math.PI, h = 1.70158, a = h * 1.525, v = h + 1, k = 2 * c / 3, C = 2 * c / 4.5;
+const o = Math.pow, a = Math.sqrt, r = Math.sin, g = Math.cos, c = Math.PI, h = 1.70158, l = h * 1.525, v = h + 1, k = 2 * c / 3, C = 2 * c / 4.5;
 function d(t) {
   return t < 1 / 2.75 ? 7.5625 * t * t : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75 : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375 : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
 }
@@ -61,13 +61,13 @@ const D = {
     return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? o(2, 20 * t - 10) / 2 : (2 - o(2, -20 * t + 10)) / 2;
   },
   inCirc: function(t) {
-    return 1 - l(1 - o(t, 2));
+    return 1 - a(1 - o(t, 2));
   },
   outCirc: function(t) {
-    return l(1 - o(t - 1, 2));
+    return a(1 - o(t - 1, 2));
   },
   inOutCirc: function(t) {
-    return t < 0.5 ? (1 - l(1 - o(2 * t, 2))) / 2 : (l(1 - o(-2 * t + 2, 2)) + 1) / 2;
+    return t < 0.5 ? (1 - a(1 - o(2 * t, 2))) / 2 : (a(1 - o(-2 * t + 2, 2)) + 1) / 2;
   },
   inElastic: function(t) {
     return t === 0 ? 0 : t === 1 ? 1 : -o(2, 10 * t - 10) * r((t * 10 - 10.75) * k);
@@ -85,7 +85,7 @@ const D = {
     return 1 + v * o(t - 1, 3) + h * o(t - 1, 2);
   },
   inOutBack: function(t) {
-    return t < 0.5 ? o(2 * t, 2) * ((a + 1) * 2 * t - a) / 2 : (o(2 * t - 2, 2) * ((a + 1) * (t * 2 - 2) + a) + 2) / 2;
+    return t < 0.5 ? o(2 * t, 2) * ((l + 1) * 2 * t - l) / 2 : (o(2 * t - 2, 2) * ((l + 1) * (t * 2 - 2) + l) + 2) / 2;
   },
   inBounce: function(t) {
     return 1 - d(1 - t);
@@ -113,7 +113,7 @@ class T {
       ...b,
       ...n
     }, document.querySelectorAll("a").forEach((i) => {
-      i.addEventListener("click", (s) => {
+      i.target || i.addEventListener("click", (s) => {
         this.onClick(s);
       });
     }), window.location.hash && document.addEventListener("DOMContentLoaded", () => {

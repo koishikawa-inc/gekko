@@ -27,9 +27,11 @@ class Gekko implements TypeGekko {
 
     // a タグのクリックイベント登録
     document.querySelectorAll('a').forEach((elm) => {
-      elm.addEventListener('click', (e: MouseEvent) => {
-        this.onClick(e);
-      });
+      if (!elm.target) {
+        elm.addEventListener('click', (e: MouseEvent) => {
+          this.onClick(e);
+        });
+      }
     });
 
     // 別ページからのアンカーへのリンクでスムーススクロールする
