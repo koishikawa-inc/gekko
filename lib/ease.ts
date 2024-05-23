@@ -122,6 +122,9 @@ const ease: { [key: string]: (x: number) => number } = {
   inOutBounce: function (x: number): number {
     return x < 0.5 ? (1 - bounceOut(1 - 2 * x)) / 2 : (1 + bounceOut(2 * x - 1)) / 2;
   },
+  linear: function (x: number): number {
+    return x;
+  },
 };
 
 export default ease;

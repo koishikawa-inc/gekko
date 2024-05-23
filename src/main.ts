@@ -1,9 +1,8 @@
-import Gekko from './gekko';
+import Gekko from '../lib/gekko';
 
 const gekko = new Gekko({
   speed: 1000,
   isSpeedAsDuration: false,
-  header: '.header',
   offset: 0,
 });
 

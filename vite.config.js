@@ -1,19 +1,20 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-
+import dts from 'vite-plugin-dts';
 export default defineConfig({
+  plugins: [dts()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/gekko.ts'),
+      entry: resolve(__dirname, 'lib/gekko.ts'),
       name: 'Gekko',
-      fileName: (format) => (format === 'umd' ? 'gekko.min.js' : `gekko.${format}.js`),
+      fileName: (format) => `gekko.${format}.js`,
+      // fileName: (format) => (format === 'umd' ? 'gekko.min.js' : `gekko.${format}.js`),
     },
-    // MEMO: yarn dev を実行するときにコメントアウトを外す
-    // rollupOptions: {
-    //   input: {
-    //     main: resolve(__dirname, 'index.html'),
-    //     nested: resolve(__dirname, 'link.html'),
-    //   },
-    // },
+    rollupOptions: {
+      external: [], // 外部依存があればここに追加
+      output: {
+        globals: {},
+      },
+    },
   },
 });

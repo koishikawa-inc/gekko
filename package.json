@@ -11,8 +11,8 @@
     "type": "git",
     "url": "git+https://github.com/koishikawa-inc/gekko"
   },
-  "private": true,
-  "version": "0.0.1",
+  "private": false,
+  "version": "0.1.0",
   "author": "darowasahito",
   "license": "MIT",
   "homepage": "https://github.com/koishikawa-inc/gekko#readme",
@@ -21,18 +21,24 @@
   },
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
-  "main": "./dist/gekko.min.js",
+  "main": "./dist/gekko.umd.js",
+  "module": "./dist/gekko.es.js",
+  "types": "./dist/gekko.d.ts",
+  "exports": {
+    "types": "./dist/gekko.d.ts",
+    "import": "./dist/gekko.es.js",
+    "require": "./dist/gekko.umd.cjs"
+  },
   "scripts": {
-    "prepublish": "tsc && vite build",
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build"
   },
   "devDependencies": {
     "typescript": "^4.6.4",
-    "vite": "^3.2.3"
-  },
-  "dependencies": {}
+    "vite": "^3.2.3",
+    "vite-plugin-dts": "^3.9.1"
+  }
 }

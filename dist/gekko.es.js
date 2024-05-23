@@ -1,11 +1,11 @@
-var q = Object.defineProperty;
-var y = (t, n, e) => n in t ? q(t, n, { enumerable: !0, configurable: !0, writable: !0, value: e }) : t[n] = e;
-var u = (t, n, e) => (y(t, typeof n != "symbol" ? n + "" : n, e), e);
-const o = Math.pow, a = Math.sqrt, r = Math.sin, g = Math.cos, c = Math.PI, h = 1.70158, l = h * 1.525, v = h + 1, k = 2 * c / 3, C = 2 * c / 4.5;
+var L = Object.defineProperty;
+var b = (t, n, e) => n in t ? L(t, n, { enumerable: !0, configurable: !0, writable: !0, value: e }) : t[n] = e;
+var a = (t, n, e) => (b(t, typeof n != "symbol" ? n + "" : n, e), e);
+const o = Math.pow, l = Math.sqrt, u = Math.sin, E = Math.cos, c = Math.PI, h = 1.70158, f = h * 1.525, v = h + 1, k = 2 * c / 3, C = 2 * c / 4.5;
 function d(t) {
   return t < 1 / 2.75 ? 7.5625 * t * t : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75 : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375 : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
 }
-const D = {
+const q = {
   inQuad: function(t) {
     return t * t;
   },
@@ -43,13 +43,13 @@ const D = {
     return t < 0.5 ? 16 * t * t * t * t * t : 1 - o(-2 * t + 2, 5) / 2;
   },
   inSine: function(t) {
-    return 1 - g(t * c / 2);
+    return 1 - E(t * c / 2);
   },
   outSine: function(t) {
-    return r(t * c / 2);
+    return u(t * c / 2);
   },
   inOutSine: function(t) {
-    return -(g(c * t) - 1) / 2;
+    return -(E(c * t) - 1) / 2;
   },
   inExpo: function(t) {
     return t === 0 ? 0 : o(2, 10 * t - 10);
@@ -61,22 +61,22 @@ const D = {
     return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? o(2, 20 * t - 10) / 2 : (2 - o(2, -20 * t + 10)) / 2;
   },
   inCirc: function(t) {
-    return 1 - a(1 - o(t, 2));
+    return 1 - l(1 - o(t, 2));
   },
   outCirc: function(t) {
-    return a(1 - o(t - 1, 2));
+    return l(1 - o(t - 1, 2));
   },
   inOutCirc: function(t) {
-    return t < 0.5 ? (1 - a(1 - o(2 * t, 2))) / 2 : (a(1 - o(-2 * t + 2, 2)) + 1) / 2;
+    return t < 0.5 ? (1 - l(1 - o(2 * t, 2))) / 2 : (l(1 - o(-2 * t + 2, 2)) + 1) / 2;
   },
   inElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : -o(2, 10 * t - 10) * r((t * 10 - 10.75) * k);
+    return t === 0 ? 0 : t === 1 ? 1 : -o(2, 10 * t - 10) * u((t * 10 - 10.75) * k);
   },
   outElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : o(2, -10 * t) * r((t * 10 - 0.75) * k) + 1;
+    return t === 0 ? 0 : t === 1 ? 1 : o(2, -10 * t) * u((t * 10 - 0.75) * k) + 1;
   },
   inOutElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? -(o(2, 20 * t - 10) * r((20 * t - 11.125) * C)) / 2 : o(2, -20 * t + 10) * r((20 * t - 11.125) * C) / 2 + 1;
+    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? -(o(2, 20 * t - 10) * u((20 * t - 11.125) * C)) / 2 : o(2, -20 * t + 10) * u((20 * t - 11.125) * C) / 2 + 1;
   },
   inBack: function(t) {
     return v * t * t * t - h * t * t;
@@ -85,7 +85,7 @@ const D = {
     return 1 + v * o(t - 1, 3) + h * o(t - 1, 2);
   },
   inOutBack: function(t) {
-    return t < 0.5 ? o(2 * t, 2) * ((l + 1) * 2 * t - l) / 2 : (o(2 * t - 2, 2) * ((l + 1) * (t * 2 - 2) + l) + 2) / 2;
+    return t < 0.5 ? o(2 * t, 2) * ((f + 1) * 2 * t - f) / 2 : (o(2 * t - 2, 2) * ((f + 1) * (t * 2 - 2) + f) + 2) / 2;
   },
   inBounce: function(t) {
     return 1 - d(1 - t);
@@ -93,24 +93,26 @@ const D = {
   outBounce: d,
   inOutBounce: function(t) {
     return t < 0.5 ? (1 - d(1 - 2 * t)) / 2 : (1 + d(2 * t - 1)) / 2;
+  },
+  linear: function(t) {
+    return t;
   }
 }, O = (...t) => {
   console.error("Gekko", ...t);
-}, b = {
+}, D = {
   speed: 1e3,
   isSpeedAsDuration: !1,
   delay: 0,
   easing: "outQuad",
-  header: "header",
   offset: 0
 };
 class T {
   constructor(n) {
-    u(this, "params");
-    u(this, "isStop", !1);
-    u(this, "isScrolling", !1);
+    a(this, "params");
+    a(this, "isStop", !1);
+    a(this, "isScrolling", !1);
     this.params = {
-      ...b,
+      ...D,
       ...n
     }, document.querySelectorAll("a").forEach((i) => {
       i.target || i.addEventListener("click", (s) => {
@@ -131,21 +133,21 @@ class T {
     const i = document.getElementById(n.replace("#", ""));
     if (i) {
       this.isStop = !1;
-      const f = window.pageYOffset || document.documentElement.scrollTop, M = i.getBoundingClientRect().top + f;
-      let w = ((s = document.querySelector(this.params.header)) == null ? void 0 : s.getBoundingClientRect().height) || 0;
-      w += this.params.offset;
-      const m = Math.max(0, M - w), p = m - f;
-      if (p === 0)
+      const m = window.pageYOffset || document.documentElement.scrollTop, M = i.getBoundingClientRect().top + m;
+      let r;
+      typeof this.params.offset == "number" ? r = this.params.offset : typeof this.params.offset == "string" ? r = ((s = document.querySelector(this.params.offset)) == null ? void 0 : s.getBoundingClientRect().height) || 0 : typeof this.params.offset == "function" ? r = this.params.offset() : r = 0;
+      const p = Math.max(0, M - r), w = p - m;
+      if (w === 0)
         return;
       if (history.pushState({}, "", n), document.dispatchEvent(new CustomEvent("beforeScroll", { detail: { anchor: n } })), e) {
         this.isScrolling = !0;
-        const Q = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(p / this.params.speed) * 1e3, B = performance.now(), S = (L) => {
-          const E = (L - B) / Q;
-          E < 1 && !this.isStop ? (window.scrollTo(0, f + p * D[this.params.easing](E)), window.requestAnimationFrame(S)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, m), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
+        const y = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(w / this.params.speed) * 1e3, Q = performance.now(), S = (B) => {
+          const g = (B - Q) / y;
+          g < 1 && !this.isStop ? (window.scrollTo(0, m + w * q[this.params.easing](g)), window.requestAnimationFrame(S)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, p), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
         };
         window.requestAnimationFrame(S);
       } else
-        window.scrollTo(0, m);
+        window.scrollTo(0, p);
     } else
       O("id is not found");
   }

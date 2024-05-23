@@ -10,7 +10,6 @@ const optionsDefault: Params = {
   isSpeedAsDuration: false,
   delay: 0,
   easing: 'outQuad',
-  header: 'header',
   offset: 0,
 };
 
@@ -61,8 +60,16 @@ class Gekko implements TypeGekko {
 
       // ---------- ---------- ----------
       // 移動先座標計算
-      let offset = document.querySelector(this.params.header)?.getBoundingClientRect().height || 0;
-      offset += this.params.offset;
+      let offset;
+      if (typeof this.params.offset == 'number') {
+        offset = this.params.offset;
+      } else if (typeof this.params.offset == 'string') {
+        offset = document.querySelector(this.params.offset)?.getBoundingClientRect().height || 0;
+      } else if (typeof this.params.offset == 'function') {
+        offset = this.params.offset();
+      } else {
+        offset = 0;
+      }
 
       const position = Math.max(0, topTarget - offset);
       const distance = position - topScroll;
