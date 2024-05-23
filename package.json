@@ -4,6 +4,8 @@
   "keywords": [
     "smooth",
     "scroll",
+    "javascript",
+    "typescript",
     "ヤモリ",
     "スムーススクロール"
   ],
@@ -12,7 +14,7 @@
     "url": "git+https://github.com/koishikawa-inc/gekko"
   },
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "darowasahito",
   "license": "MIT",
   "homepage": "https://github.com/koishikawa-inc/gekko#readme",
@@ -24,13 +26,13 @@
     "dist",
     "src"
   ],
-  "main": "./dist/gekko.umd.js",
+  "main": "./dist/gekko.min.js",
   "module": "./dist/gekko.es.js",
   "types": "./dist/gekko.d.ts",
   "exports": {
-    "types": "./dist/gekko.d.ts",
+    "require": "./dist/gekko.min.js",
     "import": "./dist/gekko.es.js",
-    "require": "./dist/gekko.umd.cjs"
+    "types": "./dist/gekko.d.ts"
   },
   "scripts": {
     "dev": "vite",

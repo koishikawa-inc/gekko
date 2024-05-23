@@ -7,8 +7,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'lib/gekko.ts'),
       name: 'Gekko',
-      fileName: (format) => `gekko.${format}.js`,
-      // fileName: (format) => (format === 'umd' ? 'gekko.min.js' : `gekko.${format}.js`),
+      fileName: (format) => (format === 'umd' ? 'gekko.min.js' : `gekko.${format}.js`),
     },
     rollupOptions: {
       external: [], // 外部依存があればここに追加
