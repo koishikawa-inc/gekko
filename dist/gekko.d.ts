@@ -1,4 +1,5 @@
 import { Params, TypeGekko } from './type';
+
 declare class Gekko implements TypeGekko {
     private params;
     private isStop;
@@ -36,6 +37,7 @@ declare class Gekko implements TypeGekko {
      */
     options(options: Partial<Params>): void;
     destroy(): void;
+    private clickHandler;
     private onClick;
     private onScroll;
     private error;
