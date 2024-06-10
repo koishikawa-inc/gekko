@@ -1,35 +1,29 @@
 import ease from './ease';
 import { Params, TypeGekko } from './type';
 
-const error = (...args: any) => {
-  console.error('Gekko', ...args);
-};
-
-const optionsDefault: Params = {
-  speed: 1000,
-  isSpeedAsDuration: false,
-  delay: 0,
-  easing: 'outQuad',
-  offset: 0,
-};
-
 class Gekko implements TypeGekko {
   private params: Params;
   private isStop: boolean = false;
   private isScrolling: boolean = false;
 
+  private optionsDefault: Params = {
+    speed: 1000,
+    isSpeedAsDuration: false,
+    delay: 0,
+    easing: 'outQuad',
+    offset: 0,
+  };
+
   constructor(options?: Partial<Params>) {
     this.params = {
-      ...optionsDefault,
+      ...this.optionsDefault,
       ...options,
     };
 
     // a タグのクリックイベント登録
     document.querySelectorAll('a').forEach((elm) => {
       if (!elm.target) {
-        elm.addEventListener('click', (e: MouseEvent) => {
-          this.onClick(e);
-        });
+        elm.addEventListener('click', this.clickHandler);
       }
     });
 
@@ -50,13 +44,24 @@ class Gekko implements TypeGekko {
     });
   }
 
+  /**
+   * 指定のアンカーへスクロールする
+   *
+   * @param {string} anchor [必須] アンカーID。#はあってもなくても。
+   * @param {boolean} [isSmooth=true] [オプション] スムーススクロールするか
+   * @return {*}  {void}
+   * @memberof Gekko
+   */
   scroll(anchor: string, isSmooth: boolean = true): void {
     const target = document.getElementById(anchor.replace('#', ''));
 
     if (target) {
       this.isStop = false;
-      const topScroll = window.pageYOffset || document.documentElement.scrollTop;
+      const topScroll = window.scrollY || document.documentElement.scrollTop;
       const topTarget = target.getBoundingClientRect().top + topScroll;
+
+      //イベント発火
+      document.dispatchEvent(new CustomEvent('beforeScroll', { detail: { anchor } }));
 
       // ---------- ---------- ----------
       // 移動先座標計算
@@ -79,9 +84,6 @@ class Gekko implements TypeGekko {
       // ---------- ---------- ----------
       // ブラウザ履歴追加
       history.pushState({}, '', anchor);
-
-      //イベント発火
-      document.dispatchEvent(new CustomEvent('beforeScroll', { detail: { anchor } }));
 
       // ---------- ---------- ----------
       // スクロール
@@ -113,14 +115,26 @@ class Gekko implements TypeGekko {
         window.scrollTo(0, position);
       }
     } else {
-      error('id is not found');
+      this.error('id is not found');
     }
   }
 
+  /**
+   * スクロールを停止
+   *
+   * @memberof Gekko
+   */
   stop(): void {
     this.isStop = true;
   }
 
+  /**
+   * スクロール時に、指定のイベントに対してイベントリスナーを登録します。
+   *
+   * @param event - リスンするイベント。'beforeScroll'、'afterScroll'、または 'stopScroll' のいずれかを指定。
+   * @param callback - イベントがトリガされた時に実行されるコールバック関数。
+   *                   `anchor` はスクロール先のアンカーID。＃は付かない。
+   */
   on(event: 'beforeScroll' | 'afterScroll' | 'stopScroll', callback: (anchor: string) => void) {
     const handler = (e: CustomEvent) => {
       callback(e.detail.anchor);
@@ -129,6 +143,12 @@ class Gekko implements TypeGekko {
     document.addEventListener(event, handler as EventListenerOrEventListenerObject);
   }
 
+  /**
+   * オプションを上書きする
+   *
+   * @param {Partial<Params>} options
+   * @memberof Gekko
+   */
   options(options: Partial<Params>) {
     this.params = {
       ...this.params,
@@ -138,7 +158,7 @@ class Gekko implements TypeGekko {
 
   destroy(): void {
     document.querySelectorAll('a').forEach((elm) => {
-      elm.removeEventListener('click', this.onClick);
+      elm.removeEventListener('click', this.clickHandler);
     });
 
     const mousewheelevent = 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll';
@@ -146,25 +166,31 @@ class Gekko implements TypeGekko {
     document.removeEventListener('touchstart', this.onScroll);
   }
 
+  private clickHandler = (e: MouseEvent) => {
+    this.onClick(e);
+  };
+
   private onClick(e: MouseEvent): void {
-    e.preventDefault();
-    e.stopPropagation();
     const elm = e.currentTarget as HTMLAnchorElement;
 
     if (!elm) {
-      error('no elm');
+      this.error('Unexpected error occurred. Target does not exist.');
       return;
     }
 
+    // ページ内のアンカーか判定して、移動先を決定
     const anchor = `${elm.protocol}//${elm.host}${elm.pathname}` === location.origin + location.pathname ? elm.hash : '';
 
     if (anchor && elm.dataset.gekko !== 'no-smooth') {
+      e.preventDefault();
+      e.stopPropagation();
       this.scroll(anchor);
-    } else if (anchor && elm.dataset.gekko === 'no-smooth') {
-      this.scroll(anchor, false);
-    } else {
-      window.location.href = elm.href;
     }
+    // else if (anchor && elm.dataset.gekko === 'no-smooth') {
+    //   this.scroll(anchor, false);
+    // } else {
+    //   window.location.href = elm.href;
+    // }
   }
 
   private onScroll(): void {
@@ -172,6 +198,10 @@ class Gekko implements TypeGekko {
       this.stop();
     }
   }
+
+  private error = (...args: any) => {
+    console.error('Gekko', ...args);
+  };
 }
 
 export default Gekko;

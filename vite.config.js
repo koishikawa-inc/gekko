@@ -5,15 +5,9 @@ export default defineConfig({
   plugins: [dts()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'lib/gekko.ts'),
+      entry: resolve(__dirname, 'src/gekko.ts'),
       name: 'Gekko',
       fileName: (format) => (format === 'umd' ? 'gekko.min.js' : `gekko.${format}.js`),
-    },
-    rollupOptions: {
-      external: [], // 外部依存があればここに追加
-      output: {
-        globals: {},
-      },
     },
   },
 });

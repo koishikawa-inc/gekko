@@ -1,4 +1,4 @@
-import Gekko from '../lib/gekko';
+import Gekko from '../../src/gekko';
 
 const gekko = new Gekko({
   speed: 1000,

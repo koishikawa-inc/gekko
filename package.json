@@ -36,7 +36,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "test": "vite --config test/vite.config.js",
+    "build:test": "tsc && vite build --config test/vite.config.js"
   },
   "devDependencies": {
     "typescript": "^4.6.4",

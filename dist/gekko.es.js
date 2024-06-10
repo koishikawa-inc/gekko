@@ -1,11 +1,11 @@
-var L = Object.defineProperty;
-var b = (t, n, e) => n in t ? L(t, n, { enumerable: !0, configurable: !0, writable: !0, value: e }) : t[n] = e;
-var a = (t, n, e) => (b(t, typeof n != "symbol" ? n + "" : n, e), e);
-const o = Math.pow, l = Math.sqrt, u = Math.sin, E = Math.cos, c = Math.PI, h = 1.70158, f = h * 1.525, v = h + 1, k = 2 * c / 3, C = 2 * c / 4.5;
+var b = Object.defineProperty;
+var q = (t, n, e) => n in t ? b(t, n, { enumerable: !0, configurable: !0, writable: !0, value: e }) : t[n] = e;
+var a = (t, n, e) => (q(t, typeof n != "symbol" ? n + "" : n, e), e);
+const o = Math.pow, l = Math.sqrt, c = Math.sin, v = Math.cos, u = Math.PI, h = 1.70158, f = h * 1.525, k = h + 1, C = 2 * u / 3, O = 2 * u / 4.5;
 function d(t) {
   return t < 1 / 2.75 ? 7.5625 * t * t : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75 : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375 : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
 }
-const q = {
+const D = {
   inQuad: function(t) {
     return t * t;
   },
@@ -43,13 +43,13 @@ const q = {
     return t < 0.5 ? 16 * t * t * t * t * t : 1 - o(-2 * t + 2, 5) / 2;
   },
   inSine: function(t) {
-    return 1 - E(t * c / 2);
+    return 1 - v(t * u / 2);
   },
   outSine: function(t) {
-    return u(t * c / 2);
+    return c(t * u / 2);
   },
   inOutSine: function(t) {
-    return -(E(c * t) - 1) / 2;
+    return -(v(u * t) - 1) / 2;
   },
   inExpo: function(t) {
     return t === 0 ? 0 : o(2, 10 * t - 10);
@@ -70,19 +70,19 @@ const q = {
     return t < 0.5 ? (1 - l(1 - o(2 * t, 2))) / 2 : (l(1 - o(-2 * t + 2, 2)) + 1) / 2;
   },
   inElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : -o(2, 10 * t - 10) * u((t * 10 - 10.75) * k);
+    return t === 0 ? 0 : t === 1 ? 1 : -o(2, 10 * t - 10) * c((t * 10 - 10.75) * C);
   },
   outElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : o(2, -10 * t) * u((t * 10 - 0.75) * k) + 1;
+    return t === 0 ? 0 : t === 1 ? 1 : o(2, -10 * t) * c((t * 10 - 0.75) * C) + 1;
   },
   inOutElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? -(o(2, 20 * t - 10) * u((20 * t - 11.125) * C)) / 2 : o(2, -20 * t + 10) * u((20 * t - 11.125) * C) / 2 + 1;
+    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? -(o(2, 20 * t - 10) * c((20 * t - 11.125) * O)) / 2 : o(2, -20 * t + 10) * c((20 * t - 11.125) * O) / 2 + 1;
   },
   inBack: function(t) {
-    return v * t * t * t - h * t * t;
+    return k * t * t * t - h * t * t;
   },
   outBack: function(t) {
-    return 1 + v * o(t - 1, 3) + h * o(t - 1, 2);
+    return 1 + k * o(t - 1, 3) + h * o(t - 1, 2);
   },
   inOutBack: function(t) {
     return t < 0.5 ? o(2 * t, 2) * ((f + 1) * 2 * t - f) / 2 : (o(2 * t - 2, 2) * ((f + 1) * (t * 2 - 2) + f) + 2) / 2;
@@ -97,9 +97,9 @@ const q = {
   linear: function(t) {
     return t;
   }
-}, O = (...t) => {
+}, M = (...t) => {
   console.error("Gekko", ...t);
-}, D = {
+}, A = {
   speed: 1e3,
   isSpeedAsDuration: !1,
   delay: 0,
@@ -112,7 +112,7 @@ class T {
     a(this, "isStop", !1);
     a(this, "isScrolling", !1);
     this.params = {
-      ...D,
+      ...A,
       ...n
     }, document.querySelectorAll("a").forEach((i) => {
       i.target || i.addEventListener("click", (s) => {
@@ -133,23 +133,23 @@ class T {
     const i = document.getElementById(n.replace("#", ""));
     if (i) {
       this.isStop = !1;
-      const m = window.pageYOffset || document.documentElement.scrollTop, M = i.getBoundingClientRect().top + m;
+      const m = window.pageYOffset || document.documentElement.scrollTop, y = i.getBoundingClientRect().top + m;
       let r;
       typeof this.params.offset == "number" ? r = this.params.offset : typeof this.params.offset == "string" ? r = ((s = document.querySelector(this.params.offset)) == null ? void 0 : s.getBoundingClientRect().height) || 0 : typeof this.params.offset == "function" ? r = this.params.offset() : r = 0;
-      const p = Math.max(0, M - r), w = p - m;
+      const p = Math.max(0, y - r), w = p - m;
       if (w === 0)
         return;
       if (history.pushState({}, "", n), document.dispatchEvent(new CustomEvent("beforeScroll", { detail: { anchor: n } })), e) {
         this.isScrolling = !0;
-        const y = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(w / this.params.speed) * 1e3, Q = performance.now(), S = (B) => {
-          const g = (B - Q) / y;
-          g < 1 && !this.isStop ? (window.scrollTo(0, m + w * q[this.params.easing](g)), window.requestAnimationFrame(S)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, p), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
+        const Q = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(w / this.params.speed) * 1e3, B = performance.now(), g = (L) => {
+          const E = (L - B) / Q;
+          E < 1 && !this.isStop ? (window.scrollTo(0, m + w * D[this.params.easing](E)), window.requestAnimationFrame(g)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, p), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
         };
-        window.requestAnimationFrame(S);
+        window.requestAnimationFrame(g);
       } else
         window.scrollTo(0, p);
     } else
-      O("id is not found");
+      M("id is not found");
   }
   stop() {
     this.isStop = !0;
@@ -177,7 +177,7 @@ class T {
     n.preventDefault(), n.stopPropagation();
     const e = n.currentTarget;
     if (!e) {
-      O("no elm");
+      M("no elm");
       return;
     }
     const i = `${e.protocol}//${e.host}${e.pathname}` === location.origin + location.pathname ? e.hash : "";
@@ -187,6 +187,9 @@ class T {
     this.isScrolling && this.stop();
   }
 }
+let S;
+const P = (t) => (S || (S = new T(t)), S);
 export {
-  T as default
+  T as default,
+  P as gk
 };

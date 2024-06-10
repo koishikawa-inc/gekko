@@ -33,7 +33,8 @@ function bounceOut(x: number): number {
   }
 }
 
-const ease: { [key: string]: (x: number) => number } = {
+// プロパティをユニオン型に変換する時、easeの型指定するとうまくいかなかった
+const ease = {
   inQuad: function (x: number): number {
     return x * x;
   },
