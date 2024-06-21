@@ -114,7 +114,7 @@ class Gekko implements TypeGekko {
         window.scrollTo(0, position);
       }
     } else {
-      this.error('id is not found');
+      this.error(`#${anchor} is not found.`);
     }
   }
 
