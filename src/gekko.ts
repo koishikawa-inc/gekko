@@ -29,9 +29,8 @@ class Gekko implements TypeGekko {
 
     // 別ページからのアンカーへのリンクでスムーススクロールする
     if (window.location.hash) {
-      document.addEventListener('DOMContentLoaded', () => {
-        this.scroll(window.location.hash);
-      });
+      window.scrollTo(0, 0);
+      this.scroll(window.location.hash);
     }
 
     // スムーススクロール中のホイール操作やタッチ操作でアニメーション停止
