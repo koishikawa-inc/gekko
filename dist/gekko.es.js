@@ -1,11 +1,11 @@
 var B = Object.defineProperty;
-var L = (t, n, o) => n in t ? B(t, n, { enumerable: !0, configurable: !0, writable: !0, value: o }) : t[n] = o;
-var r = (t, n, o) => (L(t, typeof n != "symbol" ? n + "" : n, o), o);
-const e = Math.pow, l = Math.sqrt, c = Math.sin, g = Math.cos, u = Math.PI, h = 1.70158, f = h * 1.525, v = h + 1, k = 2 * u / 3, C = 2 * u / 4.5;
+var T = (t, n, o) => n in t ? B(t, n, { enumerable: !0, configurable: !0, writable: !0, value: o }) : t[n] = o;
+var r = (t, n, o) => (T(t, typeof n != "symbol" ? n + "" : n, o), o);
+const e = Math.pow, a = Math.sqrt, c = Math.sin, E = Math.cos, u = Math.PI, h = 1.70158, f = h * 1.525, v = h + 1, k = 2 * u / 3, C = 2 * u / 4.5;
 function d(t) {
   return t < 1 / 2.75 ? 7.5625 * t * t : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75 : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375 : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
 }
-const D = {
+const b = {
   inQuad: function(t) {
     return t * t;
   },
@@ -43,13 +43,13 @@ const D = {
     return t < 0.5 ? 16 * t * t * t * t * t : 1 - e(-2 * t + 2, 5) / 2;
   },
   inSine: function(t) {
-    return 1 - g(t * u / 2);
+    return 1 - E(t * u / 2);
   },
   outSine: function(t) {
     return c(t * u / 2);
   },
   inOutSine: function(t) {
-    return -(g(u * t) - 1) / 2;
+    return -(E(u * t) - 1) / 2;
   },
   inExpo: function(t) {
     return t === 0 ? 0 : e(2, 10 * t - 10);
@@ -61,13 +61,13 @@ const D = {
     return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? e(2, 20 * t - 10) / 2 : (2 - e(2, -20 * t + 10)) / 2;
   },
   inCirc: function(t) {
-    return 1 - l(1 - e(t, 2));
+    return 1 - a(1 - e(t, 2));
   },
   outCirc: function(t) {
-    return l(1 - e(t - 1, 2));
+    return a(1 - e(t - 1, 2));
   },
   inOutCirc: function(t) {
-    return t < 0.5 ? (1 - l(1 - e(2 * t, 2))) / 2 : (l(1 - e(-2 * t + 2, 2)) + 1) / 2;
+    return t < 0.5 ? (1 - a(1 - e(2 * t, 2))) / 2 : (a(1 - e(-2 * t + 2, 2)) + 1) / 2;
   },
   inElastic: function(t) {
     return t === 0 ? 0 : t === 1 ? 1 : -e(2, 10 * t - 10) * c((t * 10 - 10.75) * k);
@@ -98,7 +98,7 @@ const D = {
     return t;
   }
 };
-class q {
+class D {
   constructor(n) {
     r(this, "params");
     r(this, "isStop", !1);
@@ -121,9 +121,7 @@ class q {
       ...n
     }, document.querySelectorAll("a").forEach((i) => {
       i.target || i.addEventListener("click", this.clickHandler);
-    }), window.location.hash && document.addEventListener("DOMContentLoaded", () => {
-      this.scroll(window.location.hash);
-    });
+    }), window.location.hash && (window.scrollTo(0, 0), this.scroll(window.location.hash));
     const o = "onwheel" in document ? "wheel" : "onmousewheel" in document ? "mousewheel" : "DOMMouseScroll";
     document.addEventListener(o, () => {
       this.onScroll();
@@ -132,35 +130,35 @@ class q {
     });
   }
   scroll(n, o = !0) {
-    var a;
+    var l;
     const i = document.getElementById(n.replace("#", ""));
     if (i) {
       this.isStop = !1;
       const m = window.scrollY || document.documentElement.scrollTop, O = i.getBoundingClientRect().top + m;
       document.dispatchEvent(new CustomEvent("beforeScroll", { detail: { anchor: n } }));
       let s;
-      typeof this.params.offset == "number" ? s = this.params.offset : typeof this.params.offset == "string" ? s = ((a = document.querySelector(this.params.offset)) == null ? void 0 : a.getBoundingClientRect().height) || 0 : typeof this.params.offset == "function" ? s = this.params.offset() : s = 0;
+      typeof this.params.offset == "number" ? s = this.params.offset : typeof this.params.offset == "string" ? s = ((l = document.querySelector(this.params.offset)) == null ? void 0 : l.getBoundingClientRect().height) || 0 : typeof this.params.offset == "function" ? s = this.params.offset() : s = 0;
       const p = Math.max(0, O - s), w = p - m;
       if (w === 0)
         return;
       if (history.pushState({}, "", n), o) {
         this.isScrolling = !0;
         const M = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(w / this.params.speed) * 1e3, y = performance.now(), S = (Q) => {
-          const E = (Q - y) / M;
-          E < 1 && !this.isStop ? (window.scrollTo(0, m + w * D[this.params.easing](E)), window.requestAnimationFrame(S)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, p), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
+          const g = (Q - y) / M;
+          g < 1 && !this.isStop ? (window.scrollTo(0, m + w * b[this.params.easing](g)), window.requestAnimationFrame(S)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, p), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
         };
         window.requestAnimationFrame(S);
       } else
         window.scrollTo(0, p);
     } else
-      this.error("id is not found");
+      this.error(`#${n} is not found.`);
   }
   stop() {
     this.isStop = !0;
   }
   on(n, o) {
-    const i = (a) => {
-      o(a.detail.anchor);
+    const i = (l) => {
+      o(l.detail.anchor);
     };
     document.addEventListener(n, i);
   }
@@ -191,5 +189,5 @@ class q {
   }
 }
 export {
-  q as default
+  D as default
 };
