@@ -129,3 +129,10 @@ const ease = {
 };
 
 export default ease;
+
+// easeのプロパティをユニオン型に変換
+const getKeys = <T extends { [key: string]: unknown }>(obj: T): (keyof T)[] => {
+  return Object.keys(obj);
+};
+const keys = getKeys(ease);
+export type Easing = (typeof keys)[number];
