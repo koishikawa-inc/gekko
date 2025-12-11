@@ -33,3 +33,5 @@ declare const ease: {
     linear: (x: number) => number;
 };
 export default ease;
+declare const keys: ("inQuad" | "outQuad" | "inOutQuad" | "inCubic" | "outCubic" | "inOutCubic" | "inQuart" | "outQuart" | "inOutQuart" | "inQuint" | "outQuint" | "inOutQuint" | "inSine" | "outSine" | "inOutSine" | "inExpo" | "outExpo" | "inOutExpo" | "inCirc" | "outCirc" | "inOutCirc" | "inElastic" | "outElastic" | "inOutElastic" | "inBack" | "outBack" | "inOutBack" | "inBounce" | "outBounce" | "inOutBounce" | "linear")[];
+export type Easing = (typeof keys)[number];

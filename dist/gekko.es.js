@@ -1,8 +1,8 @@
 var B = Object.defineProperty;
 var T = (t, n, o) => n in t ? B(t, n, { enumerable: !0, configurable: !0, writable: !0, value: o }) : t[n] = o;
-var r = (t, n, o) => (T(t, typeof n != "symbol" ? n + "" : n, o), o);
-const e = Math.pow, a = Math.sqrt, c = Math.sin, E = Math.cos, u = Math.PI, h = 1.70158, f = h * 1.525, v = h + 1, k = 2 * u / 3, C = 2 * u / 4.5;
-function d(t) {
+var s = (t, n, o) => (T(t, typeof n != "symbol" ? n + "" : n, o), o);
+const e = Math.pow, d = Math.sqrt, l = Math.sin, v = Math.cos, a = Math.PI, m = 1.70158, h = m * 1.525, k = m + 1, C = 2 * a / 3, O = 2 * a / 4.5;
+function p(t) {
   return t < 1 / 2.75 ? 7.5625 * t * t : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75 : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375 : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
 }
 const b = {
@@ -43,13 +43,13 @@ const b = {
     return t < 0.5 ? 16 * t * t * t * t * t : 1 - e(-2 * t + 2, 5) / 2;
   },
   inSine: function(t) {
-    return 1 - E(t * u / 2);
+    return 1 - v(t * a / 2);
   },
   outSine: function(t) {
-    return c(t * u / 2);
+    return l(t * a / 2);
   },
   inOutSine: function(t) {
-    return -(E(u * t) - 1) / 2;
+    return -(v(a * t) - 1) / 2;
   },
   inExpo: function(t) {
     return t === 0 ? 0 : e(2, 10 * t - 10);
@@ -61,38 +61,38 @@ const b = {
     return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? e(2, 20 * t - 10) / 2 : (2 - e(2, -20 * t + 10)) / 2;
   },
   inCirc: function(t) {
-    return 1 - a(1 - e(t, 2));
+    return 1 - d(1 - e(t, 2));
   },
   outCirc: function(t) {
-    return a(1 - e(t - 1, 2));
+    return d(1 - e(t - 1, 2));
   },
   inOutCirc: function(t) {
-    return t < 0.5 ? (1 - a(1 - e(2 * t, 2))) / 2 : (a(1 - e(-2 * t + 2, 2)) + 1) / 2;
+    return t < 0.5 ? (1 - d(1 - e(2 * t, 2))) / 2 : (d(1 - e(-2 * t + 2, 2)) + 1) / 2;
   },
   inElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : -e(2, 10 * t - 10) * c((t * 10 - 10.75) * k);
+    return t === 0 ? 0 : t === 1 ? 1 : -e(2, 10 * t - 10) * l((t * 10 - 10.75) * C);
   },
   outElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : e(2, -10 * t) * c((t * 10 - 0.75) * k) + 1;
+    return t === 0 ? 0 : t === 1 ? 1 : e(2, -10 * t) * l((t * 10 - 0.75) * C) + 1;
   },
   inOutElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? -(e(2, 20 * t - 10) * c((20 * t - 11.125) * C)) / 2 : e(2, -20 * t + 10) * c((20 * t - 11.125) * C) / 2 + 1;
+    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? -(e(2, 20 * t - 10) * l((20 * t - 11.125) * O)) / 2 : e(2, -20 * t + 10) * l((20 * t - 11.125) * O) / 2 + 1;
   },
   inBack: function(t) {
-    return v * t * t * t - h * t * t;
+    return k * t * t * t - m * t * t;
   },
   outBack: function(t) {
-    return 1 + v * e(t - 1, 3) + h * e(t - 1, 2);
+    return 1 + k * e(t - 1, 3) + m * e(t - 1, 2);
   },
   inOutBack: function(t) {
-    return t < 0.5 ? e(2 * t, 2) * ((f + 1) * 2 * t - f) / 2 : (e(2 * t - 2, 2) * ((f + 1) * (t * 2 - 2) + f) + 2) / 2;
+    return t < 0.5 ? e(2 * t, 2) * ((h + 1) * 2 * t - h) / 2 : (e(2 * t - 2, 2) * ((h + 1) * (t * 2 - 2) + h) + 2) / 2;
   },
   inBounce: function(t) {
-    return 1 - d(1 - t);
+    return 1 - p(1 - t);
   },
-  outBounce: d,
+  outBounce: p,
   inOutBounce: function(t) {
-    return t < 0.5 ? (1 - d(1 - 2 * t)) / 2 : (1 + d(2 * t - 1)) / 2;
+    return t < 0.5 ? (1 - p(1 - 2 * t)) / 2 : (1 + p(2 * t - 1)) / 2;
   },
   linear: function(t) {
     return t;
@@ -100,20 +100,20 @@ const b = {
 };
 class D {
   constructor(n) {
-    r(this, "params");
-    r(this, "isStop", !1);
-    r(this, "isScrolling", !1);
-    r(this, "optionsDefault", {
+    s(this, "params");
+    s(this, "isStop", !1);
+    s(this, "isScrolling", !1);
+    s(this, "optionsDefault", {
       speed: 1e3,
       isSpeedAsDuration: !1,
       delay: 0,
       easing: "outQuad",
       offset: 0
     });
-    r(this, "clickHandler", (n) => {
+    s(this, "clickHandler", (n) => {
       this.onClick(n);
     });
-    r(this, "error", (...n) => {
+    s(this, "error", (...n) => {
       console.error("Gekko", ...n);
     });
     this.params = {
@@ -130,26 +130,26 @@ class D {
     });
   }
   scroll(n, o = !0) {
-    var l;
+    var c;
     const i = document.getElementById(n.replace("#", ""));
     if (i) {
       this.isStop = !1;
-      const m = window.scrollY || document.documentElement.scrollTop, O = i.getBoundingClientRect().top + m;
+      const u = window.scrollY || document.documentElement.scrollTop, f = i.getBoundingClientRect().top + u;
       document.dispatchEvent(new CustomEvent("beforeScroll", { detail: { anchor: n } }));
-      let s;
-      typeof this.params.offset == "number" ? s = this.params.offset : typeof this.params.offset == "string" ? s = ((l = document.querySelector(this.params.offset)) == null ? void 0 : l.getBoundingClientRect().height) || 0 : typeof this.params.offset == "function" ? s = this.params.offset() : s = 0;
-      const p = Math.max(0, O - s), w = p - m;
-      if (w === 0)
+      let r;
+      typeof this.params.offset == "number" ? r = this.params.offset : typeof this.params.offset == "string" ? r = ((c = document.querySelector(this.params.offset)) == null ? void 0 : c.getBoundingClientRect().height) || 0 : typeof this.params.offset == "function" ? r = this.params.offset() : r = 0;
+      const w = Math.max(0, f - r), S = w - u;
+      if (S === 0)
         return;
       if (history.pushState({}, "", n), o) {
         this.isScrolling = !0;
-        const M = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(w / this.params.speed) * 1e3, y = performance.now(), S = (Q) => {
-          const g = (Q - y) / M;
-          g < 1 && !this.isStop ? (window.scrollTo(0, m + w * b[this.params.easing](g)), window.requestAnimationFrame(S)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, p), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
+        const M = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(S / this.params.speed) * 1e3, y = performance.now(), g = (Q) => {
+          const E = (Q - y) / M;
+          E < 1 && !this.isStop ? (window.scrollTo(0, u + S * b[this.params.easing](E)), window.requestAnimationFrame(g)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, w), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
         };
-        window.requestAnimationFrame(S);
+        window.requestAnimationFrame(g);
       } else
-        window.scrollTo(0, p);
+        window.scrollTo(0, w);
     } else
       this.error(`#${n} is not found.`);
   }
@@ -157,8 +157,8 @@ class D {
     this.isStop = !0;
   }
   on(n, o) {
-    const i = (l) => {
-      o(l.detail.anchor);
+    const i = (c) => {
+      o(c.detail.anchor);
     };
     document.addEventListener(n, i);
   }
@@ -181,8 +181,8 @@ class D {
       this.error("Unexpected error occurred. Target does not exist.");
       return;
     }
-    const i = `${o.protocol}//${o.host}${o.pathname}` === location.origin + location.pathname ? o.hash : "";
-    i && o.dataset.gekko !== "no-smooth" && (n.preventDefault(), n.stopPropagation(), this.scroll(i));
+    const i = (r) => r.replace(/\/$/, ""), c = `${o.protocol}//${o.host}${i(o.pathname)}`, u = i(location.origin + location.pathname), f = c === u ? o.hash : "";
+    f && o.dataset.gekko !== "no-smooth" && (n.preventDefault(), n.stopPropagation(), this.scroll(f));
   }
   onScroll() {
     this.isScrolling && this.stop();
