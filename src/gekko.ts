@@ -178,7 +178,10 @@ class Gekko implements TypeGekko {
     }
 
     // ページ内のアンカーか判定して、移動先を決定
-    const anchor = `${elm.protocol}//${elm.host}${elm.pathname}` === location.origin + location.pathname ? elm.hash : '';
+    const getPath = (url: string) => url.replace(/\/$/, '');
+    const fullPath = `${elm.protocol}//${elm.host}${getPath(elm.pathname)}`;
+    const currentPath = getPath(location.origin + location.pathname);
+    const anchor = fullPath === currentPath ? elm.hash : '';
 
     if (anchor && elm.dataset.gekko !== 'no-smooth') {
       e.preventDefault();
