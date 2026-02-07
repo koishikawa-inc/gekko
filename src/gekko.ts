@@ -90,11 +90,12 @@ class Gekko implements TypeGekko {
         // スムーススクロール
         this.isScrolling = true;
         const duration = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(distance / this.params.speed) * 1000;
-        const timeStart = performance.now();
+        let timeStart: number | null = null;
         const smoothScroll = (time: number) => {
+          if (timeStart === null) timeStart = time;
           const progress = (time - timeStart) / duration;
           if (progress < 1 && !this.isStop) {
-            // スムーススクロール　進行
+            // スムーススクロール進行
             window.scrollTo(0, topScroll + distance * ease[this.params.easing](progress));
             // window.scrollTo(0, topScroll + (position - topScroll) * progress);
             window.requestAnimationFrame(smoothScroll);

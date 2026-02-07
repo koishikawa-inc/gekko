@@ -1,7 +1,7 @@
 var B = Object.defineProperty;
 var T = (t, n, o) => n in t ? B(t, n, { enumerable: !0, configurable: !0, writable: !0, value: o }) : t[n] = o;
 var s = (t, n, o) => (T(t, typeof n != "symbol" ? n + "" : n, o), o);
-const e = Math.pow, d = Math.sqrt, l = Math.sin, v = Math.cos, a = Math.PI, m = 1.70158, h = m * 1.525, k = m + 1, C = 2 * a / 3, O = 2 * a / 4.5;
+const e = Math.pow, d = Math.sqrt, l = Math.sin, C = Math.cos, a = Math.PI, m = 1.70158, h = m * 1.525, O = m + 1, M = 2 * a / 3, y = 2 * a / 4.5;
 function p(t) {
   return t < 1 / 2.75 ? 7.5625 * t * t : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75 : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375 : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
 }
@@ -43,13 +43,13 @@ const b = {
     return t < 0.5 ? 16 * t * t * t * t * t : 1 - e(-2 * t + 2, 5) / 2;
   },
   inSine: function(t) {
-    return 1 - v(t * a / 2);
+    return 1 - C(t * a / 2);
   },
   outSine: function(t) {
     return l(t * a / 2);
   },
   inOutSine: function(t) {
-    return -(v(a * t) - 1) / 2;
+    return -(C(a * t) - 1) / 2;
   },
   inExpo: function(t) {
     return t === 0 ? 0 : e(2, 10 * t - 10);
@@ -70,19 +70,19 @@ const b = {
     return t < 0.5 ? (1 - d(1 - e(2 * t, 2))) / 2 : (d(1 - e(-2 * t + 2, 2)) + 1) / 2;
   },
   inElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : -e(2, 10 * t - 10) * l((t * 10 - 10.75) * C);
+    return t === 0 ? 0 : t === 1 ? 1 : -e(2, 10 * t - 10) * l((t * 10 - 10.75) * M);
   },
   outElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : e(2, -10 * t) * l((t * 10 - 0.75) * C) + 1;
+    return t === 0 ? 0 : t === 1 ? 1 : e(2, -10 * t) * l((t * 10 - 0.75) * M) + 1;
   },
   inOutElastic: function(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? -(e(2, 20 * t - 10) * l((20 * t - 11.125) * O)) / 2 : e(2, -20 * t + 10) * l((20 * t - 11.125) * O) / 2 + 1;
+    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5 ? -(e(2, 20 * t - 10) * l((20 * t - 11.125) * y)) / 2 : e(2, -20 * t + 10) * l((20 * t - 11.125) * y) / 2 + 1;
   },
   inBack: function(t) {
-    return k * t * t * t - m * t * t;
+    return O * t * t * t - m * t * t;
   },
   outBack: function(t) {
-    return 1 + k * e(t - 1, 3) + m * e(t - 1, 2);
+    return 1 + O * e(t - 1, 3) + m * e(t - 1, 2);
   },
   inOutBack: function(t) {
     return t < 0.5 ? e(2 * t, 2) * ((h + 1) * 2 * t - h) / 2 : (e(2 * t - 2, 2) * ((h + 1) * (t * 2 - 2) + h) + 2) / 2;
@@ -143,11 +143,14 @@ class D {
         return;
       if (history.pushState({}, "", n), o) {
         this.isScrolling = !0;
-        const M = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(S / this.params.speed) * 1e3, y = performance.now(), g = (Q) => {
-          const E = (Q - y) / M;
-          E < 1 && !this.isStop ? (window.scrollTo(0, u + S * b[this.params.easing](E)), window.requestAnimationFrame(g)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, w), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
+        const Q = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(S / this.params.speed) * 1e3;
+        let g = null;
+        const E = (v) => {
+          g === null && (g = v);
+          const k = (v - g) / Q;
+          k < 1 && !this.isStop ? (window.scrollTo(0, u + S * b[this.params.easing](k)), window.requestAnimationFrame(E)) : this.isStop ? (this.isScrolling = !1, document.dispatchEvent(new CustomEvent("stopScroll", { detail: { anchor: n } }))) : (window.scrollTo(0, w), this.isScrolling = !1, document.dispatchEvent(new CustomEvent("afterScroll", { detail: { anchor: n } })));
         };
-        window.requestAnimationFrame(g);
+        window.requestAnimationFrame(E);
       } else
         window.scrollTo(0, w);
     } else
