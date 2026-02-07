@@ -201,7 +201,7 @@ class Gekko implements TypeGekko {
     }
   }
 
-  private error = (...args: any) => {
+  private error = (...args: unknown[]) => {
     console.error('Gekko', ...args);
   };
 }
