@@ -5,6 +5,8 @@ class Gekko implements TypeGekko {
   private params: Params;
   private isStop: boolean = false;
   private isScrolling: boolean = false;
+  private delayTimeoutId: ReturnType<typeof setTimeout> | null = null;
+  private currentAnchor: string | null = null;
 
   private optionsDefault: Params = {
     speed: 1000,
@@ -80,39 +82,54 @@ class Gekko implements TypeGekko {
 
       if (distance === 0) return;
 
+      this.currentAnchor = anchor;
+
       // ---------- ---------- ----------
       // ブラウザ履歴追加
       history.pushState({}, '', anchor);
 
       // ---------- ---------- ----------
-      // スクロール
-      if (isSmooth) {
-        // スムーススクロール
-        this.isScrolling = true;
-        const duration = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(distance / this.params.speed) * 1000;
-        let timeStart: number | null = null;
-        const smoothScroll = (time: number) => {
-          if (timeStart === null) timeStart = time;
-          const progress = (time - timeStart) / duration;
-          if (progress < 1 && !this.isStop) {
-            // スムーススクロール進行
-            window.scrollTo(0, topScroll + distance * ease[this.params.easing](progress));
-            // window.scrollTo(0, topScroll + (position - topScroll) * progress);
-            window.requestAnimationFrame(smoothScroll);
-          } else if (this.isStop) {
-            // スムーススクロール 中断
-            this.isScrolling = false;
-            document.dispatchEvent(new CustomEvent('stopScroll', { detail: { anchor } }));
-          } else {
-            // スムーススクロール 終了
-            window.scrollTo(0, position);
-            this.isScrolling = false;
-            document.dispatchEvent(new CustomEvent('afterScroll', { detail: { anchor } }));
-          }
-        };
-        window.requestAnimationFrame(smoothScroll);
+      // スクロール（delay 後に開始）
+      const startScroll = () => {
+        if (isSmooth) {
+          // スムーススクロール
+          this.isScrolling = true;
+          const duration = this.params.isSpeedAsDuration ? this.params.speed : Math.abs(distance / this.params.speed) * 1000;
+          let timeStart: number | null = null;
+          const smoothScroll = (time: number) => {
+            if (timeStart === null) timeStart = time;
+            const progress = (time - timeStart) / duration;
+            if (progress < 1 && !this.isStop) {
+              // スムーススクロール進行
+              window.scrollTo(0, topScroll + distance * ease[this.params.easing](progress));
+              window.requestAnimationFrame(smoothScroll);
+            } else if (this.isStop) {
+              // スムーススクロール 中断
+              this.isScrolling = false;
+              this.currentAnchor = null;
+              document.dispatchEvent(new CustomEvent('stopScroll', { detail: { anchor } }));
+            } else {
+              // スムーススクロール 終了
+              window.scrollTo(0, position);
+              this.isScrolling = false;
+              this.currentAnchor = null;
+              document.dispatchEvent(new CustomEvent('afterScroll', { detail: { anchor } }));
+            }
+          };
+          window.requestAnimationFrame(smoothScroll);
+        } else {
+          window.scrollTo(0, position);
+          this.currentAnchor = null;
+        }
+      };
+
+      if (this.params.delay > 0) {
+        this.delayTimeoutId = setTimeout(() => {
+          this.delayTimeoutId = null;
+          if (!this.isStop) startScroll();
+        }, this.params.delay);
       } else {
-        window.scrollTo(0, position);
+        startScroll();
       }
     } else {
       this.error(`#${anchor} is not found.`);
@@ -126,6 +143,15 @@ class Gekko implements TypeGekko {
    */
   stop(): void {
     this.isStop = true;
+    if (this.delayTimeoutId !== null) {
+      clearTimeout(this.delayTimeoutId);
+      this.delayTimeoutId = null;
+      if (this.currentAnchor !== null) {
+        const anchor = this.currentAnchor;
+        this.currentAnchor = null;
+        document.dispatchEvent(new CustomEvent('stopScroll', { detail: { anchor } }));
+      }
+    }
   }
 
   /**
@@ -157,6 +183,7 @@ class Gekko implements TypeGekko {
   }
 
   destroy(): void {
+    this.stop();
     document.querySelectorAll('a').forEach((elm) => {
       elm.removeEventListener('click', this.clickHandler);
     });
