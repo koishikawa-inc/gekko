@@ -58,11 +58,12 @@ class Gekko implements TypeGekko {
 
     if (target) {
       this.isStop = false;
-      const topScroll = window.scrollY || document.documentElement.scrollTop;
-      const topTarget = target.getBoundingClientRect().top + topScroll;
 
       //イベント発火
       document.dispatchEvent(new CustomEvent('beforeScroll', { detail: { anchor } }));
+
+      const topScroll = window.scrollY || document.documentElement.scrollTop;
+      const topTarget = target.getBoundingClientRect().top + topScroll;
 
       // ---------- ---------- ----------
       // 移動先座標計算
