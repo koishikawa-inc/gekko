@@ -5,7 +5,6 @@ declare class Gekko implements TypeGekko {
     private isStop;
     private isScrolling;
     private delayTimeoutId;
-    /** 現在のスクロール対象（delay 待ちまたはスクロール中） */
     private currentAnchor;
     private optionsDefault;
     constructor(options?: Partial<Params>);
