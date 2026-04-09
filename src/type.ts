@@ -15,7 +15,7 @@ type Easing = (typeof keys)[number];
 export type Params = {
   speed: number;
   isSpeedAsDuration: boolean;
-  delay: number;
-  offset: number | string | (() => number);
+  delay: number | ((trigger: HTMLElement | null) => number);
+  offset: number | string | ((trigger: HTMLElement | null) => number);
   easing: Easing;
 };

@@ -7,6 +7,7 @@ class Gekko implements TypeGekko {
   private isScrolling: boolean = false;
   private delayTimeoutId: ReturnType<typeof setTimeout> | null = null;
   private currentAnchor: string | null = null;
+  private currentTrigger: HTMLElement | null = null;
 
   private optionsDefault: Params = {
     speed: 1000,
@@ -59,39 +60,47 @@ class Gekko implements TypeGekko {
     if (target) {
       this.isStop = false;
 
-      //イベント発火
-      document.dispatchEvent(new CustomEvent('beforeScroll', { detail: { anchor } }));
-
-      const topScroll = window.scrollY || document.documentElement.scrollTop;
-      const topTarget = target.getBoundingClientRect().top + topScroll;
-
-      // ---------- ---------- ----------
-      // 移動先座標計算
-      let offset;
-      if (typeof this.params.offset == 'number') {
-        offset = this.params.offset;
-      } else if (typeof this.params.offset == 'string') {
-        offset = document.querySelector(this.params.offset)?.getBoundingClientRect().height || 0;
-      } else if (typeof this.params.offset == 'function') {
-        offset = this.params.offset();
-      } else {
-        offset = 0;
+      if (this.delayTimeoutId !== null) {
+        clearTimeout(this.delayTimeoutId);
+        this.delayTimeoutId = null;
       }
 
-      const position = Math.max(0, topTarget - offset);
-      const distance = position - topScroll;
-
-      if (distance === 0) return;
+      //イベント発火
+      document.dispatchEvent(new CustomEvent('beforeScroll', { detail: { anchor } }));
 
       this.currentAnchor = anchor;
 
       // ---------- ---------- ----------
-      // ブラウザ履歴追加
-      history.pushState({}, '', anchor);
-
-      // ---------- ---------- ----------
       // スクロール（delay 後に開始）
       const startScroll = () => {
+        const topScroll = window.scrollY || document.documentElement.scrollTop;
+        const topTarget = target.getBoundingClientRect().top + topScroll;
+
+        // ---------- ---------- ----------
+        // 移動先座標計算
+        let offset;
+        if (typeof this.params.offset == 'number') {
+          offset = this.params.offset;
+        } else if (typeof this.params.offset == 'string') {
+          offset = document.querySelector(this.params.offset)?.getBoundingClientRect().height || 0;
+        } else if (typeof this.params.offset == 'function') {
+          offset = this.params.offset(this.currentTrigger);
+        } else {
+          offset = 0;
+        }
+
+        const position = Math.max(0, topTarget - offset);
+        const distance = position - topScroll;
+        if (distance === 0) {
+          this.currentAnchor = null;
+          this.currentTrigger = null;
+          return;
+        }
+
+        // ---------- ---------- ----------
+        // ブラウザ履歴追加
+        history.pushState({}, '', anchor);
+
         if (isSmooth) {
           // スムーススクロール
           this.isScrolling = true;
@@ -108,12 +117,14 @@ class Gekko implements TypeGekko {
               // スムーススクロール 中断
               this.isScrolling = false;
               this.currentAnchor = null;
+              this.currentTrigger = null;
               document.dispatchEvent(new CustomEvent('stopScroll', { detail: { anchor } }));
             } else {
               // スムーススクロール 終了
               window.scrollTo(0, position);
               this.isScrolling = false;
               this.currentAnchor = null;
+              this.currentTrigger = null;
               document.dispatchEvent(new CustomEvent('afterScroll', { detail: { anchor } }));
             }
           };
@@ -121,19 +132,22 @@ class Gekko implements TypeGekko {
         } else {
           window.scrollTo(0, position);
           this.currentAnchor = null;
+          this.currentTrigger = null;
         }
       };
 
-      if (this.params.delay > 0) {
+      const delay = typeof this.params.delay == 'function' ? this.params.delay(this.currentTrigger) : this.params.delay;
+
+      if (delay > 0) {
         this.delayTimeoutId = setTimeout(() => {
           this.delayTimeoutId = null;
           if (!this.isStop) startScroll();
-        }, this.params.delay);
+        }, delay);
       } else {
         startScroll();
       }
     } else {
-      this.error(`#${anchor} is not found.`);
+      this.error(`${anchor} is not found.`);
     }
   }
 
@@ -150,6 +164,7 @@ class Gekko implements TypeGekko {
       if (this.currentAnchor !== null) {
         const anchor = this.currentAnchor;
         this.currentAnchor = null;
+        this.currentTrigger = null;
         document.dispatchEvent(new CustomEvent('stopScroll', { detail: { anchor } }));
       }
     }
@@ -206,10 +221,11 @@ class Gekko implements TypeGekko {
       return;
     }
 
+    this.currentTrigger = elm;
     // ページ内のアンカーか判定して、移動先を決定
     const getPath = (url: string) => url.replace(/\/$/, '');
-    const fullPath = `${elm.protocol}//${elm.host}${getPath(elm.pathname)}`;
-    const currentPath = getPath(location.origin + location.pathname);
+    const fullPath = getPath(`${elm.protocol}//${elm.host}${elm.pathname}`);
+    const currentPath = getPath(`${location.origin}${location.pathname}`);
     const anchor = fullPath === currentPath ? elm.hash : '';
 
     if (anchor && elm.dataset.gekko !== 'no-smooth') {
@@ -217,11 +233,6 @@ class Gekko implements TypeGekko {
       e.stopPropagation();
       this.scroll(anchor);
     }
-    // else if (anchor && elm.dataset.gekko === 'no-smooth') {
-    //   this.scroll(anchor, false);
-    // } else {
-    //   window.location.href = elm.href;
-    // }
   }
 
   private onScroll(): void {
