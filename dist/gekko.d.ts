@@ -6,6 +6,7 @@ declare class Gekko implements TypeGekko {
     private isScrolling;
     private delayTimeoutId;
     private currentAnchor;
+    private currentTrigger;
     private optionsDefault;
     constructor(options?: Partial<Params>);
     /**
